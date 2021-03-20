@@ -1,7 +1,7 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
-      <div class="logo" />
+      <img class="logo" />
       <a-menu theme="dark" mode="inline" :default-selected-keys="['1']">
         <a-menu-item key="1">
           <a-icon type="user" />
@@ -43,6 +43,11 @@ export default {
 };
 </script>
 <style>
+
+.logo{
+  content: url("../assets/dxclogo.png");
+}
+
 #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;
   line-height: 64px;
