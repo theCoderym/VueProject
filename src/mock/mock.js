@@ -30,3 +30,37 @@ function  getRImg(){
 Mock.mock(/getPrice/,{
   'number|1-100':100
 })
+
+Mock.mock(/getNavData/,[
+  {
+    menuTitle:"首页",
+    iconType:"user",
+    hasChild:false,
+  },
+  {
+    menuTitle:"表单",
+    iconType:"table",
+    hasChild:false,
+  },
+  {
+    menuTitle: "组件",
+    iconType:"block",
+    hasChild: true,
+    child:[
+      {
+        menuTitle:"组件一",
+        hasChild:false,
+      },
+      {
+        menuTitle:"组件二",
+        hasChild:true,
+        child:[
+          {
+            menuTile:"子组件一",
+            hasChild:false
+          }
+        ]
+      },
+    ]
+  }
+])
