@@ -53,7 +53,7 @@ Mock.mock(/getNavData/,[
       },
       {
         menuTitle:"组件二",
-        hasChild:true,
+        hasChild:false,
         child:[
           {
             menuTile:"子组件一",

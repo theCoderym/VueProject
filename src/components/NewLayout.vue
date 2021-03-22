@@ -9,12 +9,19 @@
         :style="{ height: '100%', borderRight: 0 }"
         theme="dark"
       >
-        <component v-for="(item,index) in navlist" :key="'subfirst' + index" :is="item.hasChild?'a-sub-menu':'a-menu-item'">
+        <component v-for="(item,index) in navlist" :key="'subfirst' + index" :is="item.hasChild?'a-sub-menu':'a-menu-item' ">
 <!--          {{item.menuTile}}-->
-          <span slot="title"><a-icon :type="item.iconType" />{{item.menuTitle}}</span>
+          <a-icon v-if="!item.hasChild" :type="item.iconType" />
+          <span v-if="!item.hasChild">{{item.menuTitle}}</span>
+          <span v-else slot="title"><a-icon :type="item.iconType" />{{item.menuTitle}}</span>
           <component v-for="(itemChild,indexChild) in item.child" :key="'subsecond' + indexChild" :is="itemChild.hasChild?'a-sub-menu':'a-menu-item'">
 <!--            {{itemChild.menuTile}}-->
-            <span slot="title">{{itemChild.menuTitle}}</span>
+            <span v-if="!itemChild.hasChild">{{itemChild.menuTitle}}</span>
+            <span v-else slot="title">{{itemChild.menuTitle}}</span>
+<!--            <a-menu-item v-for="(itemChildTwo,indexChildTwo) in itemChild.child" :key="'subthird' + indexChild" v-if="itemChildTwo.hasChild">-->
+<!--              &lt;!&ndash;            {{itemChild.menuTile}}&ndash;&gt;-->
+<!--              <span>{{itemChild.menuTitle}}</span>-->
+<!--            </a-menu-item>-->
           </component>
         </component>
 <!--          <a-menu-item v-for="(itemChild,indexChild) in item.child" v-if="!itemChild.hasChild" :key="'subsecond' + index">{{itemChild.menuTitle}}</a-menu-item>-->
