@@ -7,6 +7,7 @@ import Mockjs from "./mock/mock"
 import NewLayout from "./components/NewLayout";
 import Antd from 'ant-design-vue'
   import 'ant-design-vue/dist/antd.css'
+import store from "./store";
 
 Vue.use(Antd)
 Vue.config.productionTip = false
@@ -15,6 +16,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { NewLayout },
   template: '<NewLayout/>'
 })

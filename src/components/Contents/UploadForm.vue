@@ -1,5 +1,7 @@
 <template>
-<p>提交表单</p>
+  <div>
+    <p class="form-title">提交表单</p>
+  </div>
 </template>
 
 <script>
@@ -9,5 +11,9 @@ name: "UploadForm"
 </script>
 
 <style scoped>
-
+.form-title{
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+}
 </style>

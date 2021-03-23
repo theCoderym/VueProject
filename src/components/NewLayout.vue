@@ -30,8 +30,8 @@
         />
         <a-page-header
           class="header-title-content"
-          :title="this.headertitle"
-          :sub-title="this.headerSubTitle"
+          :title="$store.state.headerTitle"
+          sub-title=""
           backIcon = "false"
         />
         </div>
@@ -54,7 +54,7 @@ const SubMenu = {
           <a-icon :type="menuInfo.iconType" /><span>{{ menuInfo.menuTitle }}</span>
         </span>
         <template v-for="(item,index) in menuInfo.child">
-          <a-menu-item :key="index" @click="submenuItemClick(menuInfo.menuTile,item)">
+          <a-menu-item :key="index" @click="submenuItemClick(menuInfo.menuTitle+'>'+item.menuTitle)">
             <router-link :to="menuInfo.routerLink + item.routerLink">
             <a-icon :type="item.iconType" />
             <span>{{ item.menuTitle }}</span>
@@ -67,9 +67,13 @@ const SubMenu = {
   // must add isSubMenu: true
   isSubMenu: true,
   methods:{
-    submenuItemClick(title,item){
-      this.$parent.headertitle = title,
-        this.$parent.headerSubTitle = item.menuTile
+    submenuItemClick(title){
+      console.log(title)
+      this.$store.commit('changeTitle',title)
+      // this.$pathirent.headertitle = title
+
+      //   this.$parent.headerSubTitle = item.menuTile,
+      // console.log(this.$parent.headertitle,this.$parent.headerSubTitle)
     }
   },
   props: {
@@ -91,8 +95,10 @@ export default {
 
   methods:{
     menuItemClick(item){
-      this.headertitle = item.menuTile,
-      this.headerSubTitle = ""
+      console.log(item)
+      this.$store.commit('changeTitle',item.menuTitle)
+      // this.headertitle = item.menuTitle,
+      // this.headerSubTitle = ""
     }
   },
 
