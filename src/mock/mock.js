@@ -35,24 +35,41 @@ Mock.mock(/getNavData/,[
   {
     menuTitle:"首页",
     iconType:"user",
+    routerLink:"/HomePage",
     hasChild:false,
   },
   {
     menuTitle:"表单",
     iconType:"table",
-    hasChild:false,
+    routerLink:"/Form",
+    hasChild:true,
+    child:[
+      {
+        menuTitle:"提交",
+        routerLink:"/upload",
+        hasChild:false,
+      },
+      {
+        menuTitle:"列表",
+        routerLink:"/show",
+        hasChild:false,
+      }
+    ]
   },
   {
     menuTitle: "组件",
     iconType:"block",
     hasChild: true,
+    routerLink:"/Component",
     child:[
       {
         menuTitle:"组件一",
+        routerLink:"/one",
         hasChild:false,
       },
       {
         menuTitle:"组件二",
+        routerLink:"/two",
         hasChild:false,
         child:[
           {

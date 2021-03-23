@@ -9,54 +9,15 @@
         :style="{ height: '100%', borderRight: 0 }"
         theme="dark"
       >
-        <component v-for="(item,index) in navlist" :key="'subfirst' + index" :is="item.hasChild?'a-sub-menu':'a-menu-item' ">
-<!--          {{item.menuTile}}-->
-          <a-icon v-if="!item.hasChild" :type="item.iconType" />
-          <span v-if="!item.hasChild">{{item.menuTitle}}</span>
-          <span v-else slot="title"><a-icon :type="item.iconType" />{{item.menuTitle}}</span>
-          <component v-for="(itemChild,indexChild) in item.child" :key="'subsecond' + indexChild" :is="itemChild.hasChild?'a-sub-menu':'a-menu-item'">
-<!--            {{itemChild.menuTile}}-->
-            <span v-if="!itemChild.hasChild">{{itemChild.menuTitle}}</span>
-            <span v-else slot="title">{{itemChild.menuTitle}}</span>
-<!--            <a-menu-item v-for="(itemChildTwo,indexChildTwo) in itemChild.child" :key="'subthird' + indexChild" v-if="itemChildTwo.hasChild">-->
-<!--              &lt;!&ndash;            {{itemChild.menuTile}}&ndash;&gt;-->
-<!--              <span>{{itemChild.menuTitle}}</span>-->
-<!--            </a-menu-item>-->
-          </component>
-        </component>
-<!--          <a-menu-item v-for="(itemChild,indexChild) in item.child" v-if="!itemChild.hasChild" :key="'subsecond' + index">{{itemChild.menuTitle}}</a-menu-item>-->
-<!--          <a-sub-menu key="sub88">-->
-<!--            <span slot="title"><a-icon type="notification" />subnav 3</span>-->
-<!--            <a-menu-item key="9">-->
-<!--              option9-->
-<!--            </a-menu-item>-->
-<!--            <a-menu-item key="10">-->
-<!--              option10-->
-<!--            </a-menu-item>-->
-<!--            <a-menu-item key="11">-->
-<!--              option11-->
-<!--            </a-menu-item>-->
-<!--            <a-menu-item key="12">-->
-<!--              option12-->
-<!--            </a-menu-item>-->
-<!--          </a-sub-menu>-->
-<!--          <a-menu-item key="1">-->
-<!--            option1-->
-<!--          </a-menu-item>-->
-<!--          <a-menu-item key="2">-->
-<!--            option2-->
-<!--          </a-menu-item>-->
-<!--          <a-menu-item key="3">-->
-<!--            option3-->
-<!--          </a-menu-item>-->
-<!--          <a-menu-item key="4">-->
-<!--            option4-->
-<!--          </a-menu-item>-->
-<!--        </component>-->
-<!--        <a-menu-item v-for="(item,index) in navlist" :key="'itemfirst' + index">-->
-<!--          <a-icon type="user" />-->
-<!--          <span>{{item.menuTile}}</span>-->
-<!--        </a-menu-item>-->
+        <template v-for="item in navlist">
+          <a-menu-item v-if="!item.hasChild" :key="item.key">
+            <router-link :to="item.routerLink">
+            <a-icon :type="item.iconType" />
+            <span>{{ item.menuTitle }}</span>
+            </router-link>
+          </a-menu-item>
+          <sub-menu v-else :key="item.key" :menu-info="item" />
+        </template>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -70,14 +31,49 @@
       <a-layout-content
         :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
       >
-        Content
+        <router-view></router-view>
       </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
 <script>
+
+import { Menu } from 'ant-design-vue'
+const SubMenu = {
+  template: `
+      <a-sub-menu :key="menuInfo.menuTitle" v-bind="$props" v-on="$listeners">
+        <span slot="title">
+          <a-icon :type="menuInfo.iconType" /><span>{{ menuInfo.menuTitle }}</span>
+        </span>
+        <template v-for="(item,index) in menuInfo.child">
+          <a-menu-item :key="index">
+            <router-link :to="menuInfo.routerLink + item.routerLink">
+            <a-icon :type="item.iconType" />
+            <span>{{ item.menuTitle }}</span>
+            </router-link>
+          </a-menu-item>
+        </template>
+      </a-sub-menu>
+    `,
+  name: 'SubMenu',
+  // must add isSubMenu: true
+  isSubMenu: true,
+  props: {
+    ...Menu.SubMenu.props,
+    // Cannot overlap with properties within Menu.SubMenu.props
+    menuInfo: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+}
+
 import axios from "axios";
 export default {
+
+  components: {
+    'sub-menu': SubMenu,
+  },
 
   mounted() {
     axios.get('api/getNavData')
