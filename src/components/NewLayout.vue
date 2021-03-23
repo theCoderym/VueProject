@@ -10,7 +10,7 @@
         theme="dark"
       >
         <template v-for="item in navlist">
-          <a-menu-item v-if="!item.hasChild" :key="item.key">
+          <a-menu-item v-if="!item.hasChild" :key="item.key" @click="menuItemClick(item)">
             <router-link :to="item.routerLink">
             <a-icon :type="item.iconType" />
             <span>{{ item.menuTitle }}</span>
@@ -22,11 +22,19 @@
     </a-layout-sider>
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
+        <div class="header-title-div">
         <a-icon
           class="trigger"
           :type="collapsed ? 'menu-unfold' : 'menu-fold'"
           @click="() => (collapsed = !collapsed)"
         />
+        <a-page-header
+          class="header-title-content"
+          :title="this.headertitle"
+          :sub-title="this.headerSubTitle"
+          backIcon = "false"
+        />
+        </div>
       </a-layout-header>
       <a-layout-content
         :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
@@ -46,7 +54,7 @@ const SubMenu = {
           <a-icon :type="menuInfo.iconType" /><span>{{ menuInfo.menuTitle }}</span>
         </span>
         <template v-for="(item,index) in menuInfo.child">
-          <a-menu-item :key="index">
+          <a-menu-item :key="index" @click="submenuItemClick(menuInfo.menuTile,item)">
             <router-link :to="menuInfo.routerLink + item.routerLink">
             <a-icon :type="item.iconType" />
             <span>{{ item.menuTitle }}</span>
@@ -58,6 +66,12 @@ const SubMenu = {
   name: 'SubMenu',
   // must add isSubMenu: true
   isSubMenu: true,
+  methods:{
+    submenuItemClick(title,item){
+      this.$parent.headertitle = title,
+        this.$parent.headerSubTitle = item.menuTile
+    }
+  },
   props: {
     ...Menu.SubMenu.props,
     // Cannot overlap with properties within Menu.SubMenu.props
@@ -75,6 +89,13 @@ export default {
     'sub-menu': SubMenu,
   },
 
+  methods:{
+    menuItemClick(item){
+      this.headertitle = item.menuTile,
+      this.headerSubTitle = ""
+    }
+  },
+
   mounted() {
     axios.get('api/getNavData')
       .then((res) => {
@@ -89,6 +110,8 @@ export default {
   data() {
     return {
       collapsed: false,
+      headertitle:"",
+      headerSubTitle:"",
       navlist:[],
     };
   },
@@ -98,6 +121,16 @@ export default {
 
 .logo{
   content: url("../assets/dxclogo.png");
+}
+
+.header-title-content{
+  padding-left: 5px;
+}
+
+.header-title-div{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 #components-layout-demo-custom-trigger .trigger {
