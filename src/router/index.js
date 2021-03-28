@@ -8,15 +8,22 @@ import Two from "../components/Contents/Two";
 import ComLib from "../components/Contents/ComLib"
 import ShowForm from "../components/Contents/ShowForm";
 import UploadForm from "../components/Contents/UploadForm";
+import Login from "../components/Contents/Login";
 
 Vue.use(Router)
+// var islogin => (){
+//
+// };
+
+// const islogin = getLoginStatus();
+
 
 export default new Router({
   mode:"history",
   routes: [
     {
       path:'/',
-      redirect:'/HomePage'
+      redirect:'/HomePage',
     },
     {
       path: '/',
@@ -29,6 +36,15 @@ export default new Router({
       path: '/HomePage',
       name: 'HomePage',
       component: HomePage,
+      meta:{
+        requireAuth:true,
+      }
+
+    },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: Login,
 
     },
     {

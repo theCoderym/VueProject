@@ -1,5 +1,6 @@
 <template>
-  <a-layout id="components-layout-demo-custom-trigger">
+  <router-view v-if="!islogin"></router-view>
+  <a-layout id="components-layout-demo-custom-trigger" v-else>
     <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
       <img :style="{width:collapsed?'50px':'150px'}" class="logo" />
       <a-menu
@@ -54,7 +55,7 @@ const SubMenu = {
           <a-icon :type="menuInfo.iconType" /><span>{{ menuInfo.menuTitle }}</span>
         </span>
         <template v-for="(item,index) in menuInfo.child">
-          <a-menu-item :key="index" @click="submenuItemClick(menuInfo.menuTitle+'>'+item.menuTitle)">
+          <a-menu-item :key="index" @click="submenuItemClick(menuInfo.menuTitle+' > '+item.menuTitle)">
             <router-link :to="menuInfo.routerLink + item.routerLink">
             <a-icon :type="item.iconType" />
             <span>{{ item.menuTitle }}</span>
@@ -68,7 +69,7 @@ const SubMenu = {
   isSubMenu: true,
   methods:{
     submenuItemClick(title){
-      console.log(title)
+      console.log(title,this.$parent)
       this.$store.commit('changeTitle',title)
       // this.$pathirent.headertitle = title
 
@@ -87,6 +88,7 @@ const SubMenu = {
 }
 
 import axios from "axios";
+import {getLoginStatus} from "../loginAuth.js"
 export default {
 
   components: {
@@ -96,6 +98,7 @@ export default {
   methods:{
     menuItemClick(item){
       console.log(item)
+
       this.$store.commit('changeTitle',item.menuTitle)
       // this.headertitle = item.menuTitle,
       // this.headerSubTitle = ""
@@ -111,6 +114,13 @@ export default {
       .catch((error) => {
         console.log(error)
       })
+
+    this.islogin = getLoginStatus();
+    console.log('登录状态' + this.islogin );
+    if (!this.islogin){
+
+      this.$router.replace('/Login')
+    }
   },
 
   data() {
@@ -119,6 +129,7 @@ export default {
       headertitle:"",
       headerSubTitle:"",
       navlist:[],
+      islogin:false,
     };
   },
 };
