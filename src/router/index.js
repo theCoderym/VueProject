@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import HomePage from '../components/Contents/HomePage'
 import Form from "../components/Contents/Form";
 import One from "../components/Contents/One";
@@ -8,8 +7,8 @@ import Two from "../components/Contents/Two";
 import ComLib from "../components/Contents/ComLib"
 import ShowForm from "../components/Contents/ShowForm";
 import UploadForm from "../components/Contents/UploadForm";
-import Login from "../components/Contents/Login";
-
+import Login from "../components/Login";
+// import {getLoginStatus} from "../loginAuth.js"
 Vue.use(Router)
 // var islogin => (){
 //
@@ -23,6 +22,7 @@ export default new Router({
   routes: [
     {
       path:'/',
+      // redirect:islogin?'/HomePage':'/Login',
       redirect:'/HomePage',
     },
     {

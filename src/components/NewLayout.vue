@@ -1,6 +1,6 @@
 <template>
-  <router-view v-if="!islogin"></router-view>
-  <a-layout id="components-layout-demo-custom-trigger" v-else>
+  <router-view  v-if="!islogin"></router-view>
+  <a-layout :key="nowTime" id="components-layout-demo-custom-trigger" v-else>
     <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
       <img :style="{width:collapsed?'50px':'150px'}" class="logo" />
       <a-menu
@@ -88,7 +88,7 @@ const SubMenu = {
 }
 
 import axios from "axios";
-import {getLoginStatus} from "../loginAuth.js"
+import {getLoginStatus} from "../LoginAuth.js"
 export default {
 
   components: {
@@ -102,7 +102,29 @@ export default {
       this.$store.commit('changeTitle',item.menuTitle)
       // this.headertitle = item.menuTitle,
       // this.headerSubTitle = ""
+    },
+    getTime(){
+      setInterval(()=>{
+        //new Date() new一个data对象，当前日期和时间
+        //toLocaleString() 方法可根据本地时间把 Date 对象转换为字符串，并返回结果。
+        this.nowtime = new Date().toLocaleString();
+      },1000)
     }
+  },
+
+  beforeCreate() {
+    this.islogin = getLoginStatus();
+    console.log('登录状态' + this.islogin );
+    if (!this.islogin){
+      if (this.$route.path != '/Login'){
+      this.$router.replace('/Login')
+      }
+    }
+  },
+
+  created() {
+    this.getTime(),
+      this.islogin = getLoginStatus();
   },
 
   mounted() {
@@ -114,13 +136,6 @@ export default {
       .catch((error) => {
         console.log(error)
       })
-
-    this.islogin = getLoginStatus();
-    console.log('登录状态' + this.islogin );
-    if (!this.islogin){
-
-      this.$router.replace('/Login')
-    }
   },
 
   data() {
@@ -130,8 +145,11 @@ export default {
       headerSubTitle:"",
       navlist:[],
       islogin:false,
+      nowTime:""
     };
   },
+
+
 };
 </script>
 <style>

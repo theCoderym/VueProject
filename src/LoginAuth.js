@@ -6,9 +6,15 @@ Vue.use(VueCookies)
 VueCookies.config('30d')
 export function getLoginStatus() {
   if(VueCookies.isKey('islogin')){
-    return VueCookies.get('islogin');
+    const loginString = VueCookies.get('islogin');
+    if (loginString === 'true'){
+      return true;
+    }else {
+      return false;
+    }
+
   }else{
-    VueCookies.set('islogin', false, 30);
+    VueCookies.set('islogin', '', 30);
     return false;
   }
 }

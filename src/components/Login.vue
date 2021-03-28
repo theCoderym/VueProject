@@ -33,33 +33,17 @@
         </a-input>
       </a-form-item>
       <a-form-item>
-<!--        <a-checkbox-->
-<!--          v-decorator="[-->
-<!--          'remember',-->
-<!--          {-->
-<!--            valuePropName: 'checked',-->
-<!--            initialValue: true,-->
-<!--          },-->
-<!--        ]"-->
-<!--        >-->
-<!--          记住密码-->
-<!--        </a-checkbox>-->
-<!--        <a class="login-form-forgot" href="">-->
-<!--          Forgot password-->
-<!--        </a>-->
         <a-button type="primary" html-type="submit" class="login-form-button">
           登  录
         </a-button>
-<!--        Or-->
-<!--        <a href="">-->
-<!--          register now!-->
-<!--        </a>-->
       </a-form-item>
     </a-form>
   </div>
 </template>
 
 <script>
+import {setLoginStatus} from '../LoginAuth'
+import NewLayout from "./NewLayout";
 export default {
   name: "Login",
   beforeCreate() {
@@ -71,6 +55,11 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
+          setLoginStatus('true');
+          this.$router.push('/');
+          location.reload();
+
+          console.log(this.$cookies.keys(),this.$route.path);
         }
       });
     },
@@ -86,15 +75,18 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
-.loginInput{
-  flex-grow: 2;
+/*.loginInput{*/
+/*  flex-grow: 1;*/
+/*  flex-basis: 400px;*/
+/*}*/
+#components-form-demo-normal-login{
+  width: 500px;
 }
 
 #components-form-demo-normal-login .login-form {
-  max-width: 300px;
+  max-width: 500px;
 }
 #components-form-demo-normal-login .login-form-forgot {
   float: right;

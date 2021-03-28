@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import router from './router'
-import Layout from "./components/layout";
 import Mockjs from "./mock/mock"
 import NewLayout from "./components/NewLayout";
 import Antd from 'ant-design-vue'
